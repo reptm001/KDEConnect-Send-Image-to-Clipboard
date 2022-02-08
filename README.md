@@ -4,7 +4,9 @@ Send an image from one PC to another PC through **KDE Connect** and add to the r
 
 This is done through two bash scripts, one running on the **sender** PC and another on the **receiver** PC.
 
-**Example usage**: Viewing content on the **sender** PC, making notes on the **receiver** PC -> Take a screenshot on the **sender** PC -> Quickly paste it into a note-taking app on the **receiver** PC. 
+**Example usage**: 
+
+Viewing content on the **sender** PC, making notes on the **receiver** PC -> Take a screenshot on the **sender** PC -> Quickly paste it into a note-taking app on the **receiver** PC. 
 
 *Note: This example requires additional configuration of KDE Connect and a screenshotting tool (instructions listed below)*
 
@@ -187,7 +189,7 @@ This may be a result of the script sending the image through kdeconnect-cli befo
 To remedy this, increase the time for the script to wait before sending the image file on line 177:
 
 ```
-177&emsp;&emsp;sleep 1&emsp;&emsp;&emsp;&emsp;->177&emsp;&emsp;sleep 2
+177 &emsp;&emsp; sleep 1 &emsp;&emsp;&emsp;&emsp; -> 177 &emsp;&emsp; sleep 2
 ```
 
 ### `SendCaptures.sh` : KDE Connect hangs on 'Sending to *device-name*' or fails to send file
