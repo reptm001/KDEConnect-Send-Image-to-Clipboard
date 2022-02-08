@@ -2,6 +2,18 @@
 
 Send an image from one PC to another PC through **KDE Connect** and add to the receiver's clipboard. Uses **inotifywait** to monitor directory file changes.
 
+This is done through two bash scripts, one running on the **sender** PC and another on the **receiver** PC.
+
+**Example usage**: Viewing content on the **sender** PC, making notes on the **receiver** PC -> Take a screenshot on the **sender** PC -> Quickly paste it into a note-taking app on the **receiver** PC. 
+
+*Note: This example requires additional configuration of KDE Connect and a screenshotting tool (instructions listed below)*
+
+**Requirements**:
+
+- Both PCs (**sender/receiver**) must be running **Linux** and **KDE Plasma** (*PC -> Mobile not currently supported*)
+- Both PCs (**sender/receiver**) must be paired and available to one another through KDE Connect
+- Image files must be of type image/PNG : ".png" (*Other file types not currently supported*)
+
 ## Dependencies
 
 Since these scripts make use of the **KDE Connect** application, both PCs (**sender/receiver**) must be running the **KDE Plasma** graphical desktop environment.
@@ -10,9 +22,9 @@ Since these scripts make use of the **KDE Connect** application, both PCs (**sen
 
 | Dependency | PC |
 | ---------- | -- |
-| - kdeconnect-cli (KDEConnect) | (**sender/receiver**) |
-| - inotify-tools (inotifywait) | (**sender/receiver**) |
-| - xclip | (**receiver**) |
+| kdeconnect-cli (KDEConnect) | (**sender/receiver**) |
+| inotify-tools (inotifywait) | (**sender/receiver**) |
+| xclip | (**receiver**) |
 
 ### Installing Dependencies
 
@@ -106,17 +118,25 @@ $ sudo chmod +x ReceiveCaptures.sh
 
 1) Launch **KDE Connect** from the Application Launcher
 
+![1](https://user-images.githubusercontent.com/7481414/153090220-4e19c678-31f9-4a07-bec4-cbb02be92c78.png)
+
 2) Select the **sender** PC from the left panel (device must be configured and connected) -> press **"Plugin Settings"**
+
+![2](https://user-images.githubusercontent.com/7481414/153090260-017b979d-2507-47f9-8078-06eb4e90b3e6.png)
 
 3) Press the settings cog for **"Share and receive"**
 
+![3](https://user-images.githubusercontent.com/7481414/153090276-543dbcf5-ca4e-4afc-a657-769b817ed6e1.png)
+
 4) Enter the `/directory/to/receive/from/` into the input field -> hit **"Apply"**
+
+![4](https://user-images.githubusercontent.com/7481414/153090292-2ae0852e-4bad-406f-a280-3281b86c7c14.png)
 
 ## Usage
 
 ### Sender
 
-```bash
+```
 $ ./SendCaptures.sh --help
 Usage: SendCaptures.sh [-h] [-v] [-r] [-d DIRECTORY] [-n DEVICE_NAME]
 
@@ -139,7 +159,7 @@ Available options:
 
 ### Receiver
 
-```bash
+```
 $ ./ReceiveCaptures.sh
 Usage: ReceiveCaptures.sh [-h] [-v] [-r] [-d DIRECTORY]
 
@@ -158,6 +178,21 @@ Available options:
 -d, --dir           Specify directory to monitor and receive from
 ```
 
+## Troubleshooting
+
+### `SendCaptures.sh` : incorrectly skipping files that are of type image/PNG
+
+This may be a result of the script sending the image through kdeconnect-cli before it has been fully loaded into the filesystem.
+
+To remedy this, increase the time for the script to wait before sending the image file on line 177:
+
+```
+177&emsp;&emsp;sleep 1&emsp;&emsp;&emsp;&emsp;->177&emsp;&emsp;sleep 2
+```
+
+### `SendCaptures.sh` : KDE Connect hangs on 'Sending to *device-name*' or fails to send file
+
+This may be the same issue as above.
 
 ## License
 [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
