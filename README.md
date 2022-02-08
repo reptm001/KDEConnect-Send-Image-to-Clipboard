@@ -189,7 +189,7 @@ This may be a result of the script sending the image through kdeconnect-cli befo
 To remedy this, increase the time for the script to wait before sending the image file on line 177:
 
 ```
-177 &emsp;&emsp; sleep 1 &emsp;&emsp;&emsp;&emsp; -> 177 &emsp;&emsp; sleep 2
+177: sleep 1 -> 177: sleep 2
 ```
 
 ### `SendCaptures.sh` : KDE Connect hangs on 'Sending to *device-name*' or fails to send file
