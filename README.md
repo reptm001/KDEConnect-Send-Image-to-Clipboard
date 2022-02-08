@@ -120,11 +120,11 @@ $ sudo chmod +x ReceiveCaptures.sh
 
 1) Launch **KDE Connect** from the Application Launcher
 
-![1](https://user-images.githubusercontent.com/7481414/153090220-4e19c678-31f9-4a07-bec4-cbb02be92c78.png)
+![1](https://user-images.githubusercontent.com/7481414/153094519-76f1ee46-3c4e-43b2-998e-11a604e91ee4.png)
 
 2) Select the **sender** PC from the left panel (device must be configured and connected) -> press **"Plugin Settings"**
 
-![2](https://user-images.githubusercontent.com/7481414/153090260-017b979d-2507-47f9-8078-06eb4e90b3e6.png)
+![2](https://user-images.githubusercontent.com/7481414/153094574-c2167cc4-1f65-4115-96b8-3df236bcd55b.png)
 
 3) Press the settings cog for **"Share and receive"**
 
