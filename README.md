@@ -4,10 +4,6 @@ Send an image from one PC to another PC through **KDE Connect** and add to the r
 
 This is done through two bash scripts, one running on the **sender** PC and another on the **receiver** PC.
 
-![Sender](https://user-images.githubusercontent.com/7481414/153097537-5bd0ed9b-0e0c-480b-85d8-9651df98404b.GIF)
-
-![Receiver](https://user-images.githubusercontent.com/7481414/153097573-9cc2c377-6448-4554-a39b-454732eafa52.GIF)
-
 **Example usage**: 
 
 Viewing content on the **sender** PC, making notes on the **receiver** PC -> Take a screenshot on the **sender** PC -> Quickly paste it into a note-taking app on the **receiver** PC. 
