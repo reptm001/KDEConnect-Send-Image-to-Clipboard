@@ -140,7 +140,7 @@ $ sudo chmod +x ReceiveCaptures.sh
 
 ```
 $ ./SendCaptures.sh --help
-Usage: SendCaptures.sh [-h] [-v] [-r] [-d DIRECTORY] [-n DEVICE_NAME]
+Usage: SendCaptures.sh [-h] [-v] [-r] [-d DIRECTORY] [-n DEVICE_NAME] [-c COMMAND_NAME]
 
 Send image files that appear in a DIRECTORY to a DEVICE through KDE Connect.
 
@@ -148,7 +148,7 @@ Where a DIRECTORY   is not specified, the script directory will be used.
 Where a DEVICE_NAME is not specified, the script will display a list of available devices to choose from.
 Used in conjunction with the 'ReceiveCaptures.sh' script on the recieving DEVICE.
 
-Example: SendCaptures.sh -d '/home/user/screenshots/' -n 'Desktop-PC' -r
+Example: SendCaptures.sh -r -d '/home/user/screenshots/' -n 'Desktop-PC'
 
 Available options:
 
@@ -157,6 +157,7 @@ Available options:
 -r, --remove-file   Remove image after sending it
 -d, --dir           Specify directory to monitor and send from
 -n, --device        Specify name of device to send to
+-c, --command       Run remote command on device with given config name
 ```
 
 ### Receiver
