@@ -99,24 +99,28 @@ inotifywait -m $notify_dir -e create -e moved_to --format "%w%f"|
         msg ""
         file=${filepath##*/}
         dir="${filepath%/*}/"
-        sleep 1
         msg "The file '$file' appeared in directory '$dir'"
-        file_size=$(stat -c%s $filepath)
-        if [ $file_size -gt 100 ]
+        if [ "${file##*.}" != "part" ]
         then
-            if file -b "$filepath" | grep -qE 'PNG'
+            file_size=$(stat -c%s $filepath)
+            if [ $file_size -gt 100 ]
             then
-                xclip -selection clipboard -t image/png -i $filepath
-                msg "File '$file' added to clipboard."
-                if [ "$remove_file" == "1" ]
+                if file -b "$filepath" | grep -qE 'PNG'
                 then
-                    rm $filepath
-                    msg "File '$file' deleted."
+                    xclip -selection clipboard -t image/png -i $filepath
+                    msg "File '$file' added to clipboard."
+                    if [ "$remove_file" == "1" ]
+                    then
+                        rm $filepath
+                        msg "File '$file' deleted."
+                    fi
+                else
+                    msg "File '$file' not of type image/png, skipping.."
                 fi
             else
-                msg "File '$file' not of type image/png, skipping.."
+                msg "File '$file' smaller than 100 bytes, skipping.."
             fi
         else
-            msg "File '$file' smaller than 100 bytes, skipping.."
+            msg "File '$file' is a partial file, skipping.."
         fi
     done
