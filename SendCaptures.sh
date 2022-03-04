@@ -13,7 +13,7 @@ script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 usage() {
   cat << EOF # remove the space between << and EOF, this is due to web plugin issue
-Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v] [-r] [-d DIRECTORY] [-n DEVICE_NAME]
+Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v] [-r] [-d DIRECTORY] [-n DEVICE_NAME] [-c COMMAND_NAME]
 
 Send image files that appear in a DIRECTORY to a DEVICE through KDE Connect.
 
@@ -21,7 +21,7 @@ Where a DIRECTORY   is not specified, the script directory will be used.
 Where a DEVICE_NAME is not specified, the script will display a list of available devices to choose from.
 Used in conjunction with the 'ReceiveCaptures.sh' script on the recieving DEVICE.
 
-Example: $(basename "${BASH_SOURCE[0]}") -d '/home/user/screenshots/' -n 'Desktop-PC' -r
+Example: $(basename "${BASH_SOURCE[0]}") -r -d '/home/user/screenshots/' -n 'Desktop-PC'
 
 Available options:
 
@@ -30,6 +30,7 @@ Available options:
 -r, --remove-file   Remove image after sending it
 -d, --dir           Specify directory to monitor and send from
 -n, --device        Specify name of device to send to
+-c, --command       Run remote command on device with given config name
 EOF
   exit
 }
@@ -58,6 +59,7 @@ parse_params() {
   remove_file=0
   notify_dir=''
   device_name=''
+  command_name=''
 
   while :; do
     case "${1-}" in
@@ -71,6 +73,10 @@ parse_params() {
       ;;
     -n | --device) # specify device_name
       device_name="${2-}"
+      shift
+      ;;
+    -c | --command) # specify remote command_name
+      command_name="${2-}"
       shift
       ;;
     -?*) die "Unknown option: $1" ;;
@@ -164,6 +170,27 @@ else
     fi
 fi
 
+### Execute remote KDEConnect command
+## If specified, find command with that config name
+## Execute command on remote device
+if [ "$command_name" != "" ]
+then
+    COMLIST=$(kdeconnect-cli -n $device_name --list-commands)
+    if echo $COMLIST | grep -qw $command_name
+    then
+        COMID="${COMLIST%%:*}"
+        COMMAND="${COMLIST##*:}"
+        msg "Executing command '$COMMAND' on '$device_name'.."
+        kdeconnect-cli -n $device_name --execute-command $COMID
+        msg "Command executed."
+        msg ""
+    else
+        msg "Error: Remote command '$command_name' cannot be found for device '$device_name'."
+        msg "  (Check the KDE Connect configuration for commands on the remote device)"
+        die ""
+    fi
+fi
+
 ### Monitor directory for new files
 ## Send file to device if it is of type image/png
 ## Delete file if specified in script flags
@@ -183,6 +210,7 @@ inotifywait -m $notify_dir -e create -e moved_to --format "%w%f"|
             msg "File '$file' sent."
             if [ "$remove_file" == "1" ]
             then
+                sleep 1
                 rm $filepath
                 msg "File '$file' deleted."
             fi
